@@ -1,0 +1,3 @@
+/* Elementor editor preview only: keep animated elements visible while editing. */
+[class*="bl-m-"],.bl-stagger>*,.bl-stagger-yes>*,.bl-stagger-yes>.e-con-inner>*{opacity:1!important;transform:none!important;clip-path:none!important}
+.bl-header.is-hidden{transform:none}

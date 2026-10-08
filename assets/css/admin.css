@@ -1,0 +1,15 @@
+/* Beleon admin: details box + settings screens */
+.bl-mb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;padding:6px 0}
+.bl-mb__row{display:flex;flex-direction:column;gap:6px}
+.bl-mb__row--lines,.bl-mb__row--itinerary,.bl-mb__row--gallery,.bl-mb__row--relation{grid-column:1/-1}
+.bl-mb__row>label{font-weight:600}
+.bl-mb__row textarea{width:100%;font-family:inherit}
+.bl-mb__row .description{margin:0}
+.bl-mb__checks{display:flex;flex-wrap:wrap;gap:6px 18px;padding:10px 12px;border:1px solid #dcdcde;border-radius:6px;background:#fff}
+.bl-mb__thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.bl-mb__thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px}
+@media (max-width:782px){.bl-mb{grid-template-columns:1fr}}
+.bl-admin-card{background:#fff;border:1px solid #dcdcde;border-radius:10px;padding:8px 24px 18px;max-width:980px;margin-top:18px}
+.bl-admin-card h2{margin-top:18px}
+.bl-admin-card .form-table th{width:240px}
+.bl-admin-card code{font-size:12px}
