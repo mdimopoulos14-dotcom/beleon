@@ -113,7 +113,7 @@ function beleon_header_is_transparent() {
 		$on = true;
 	} else {
 		// Front page, and singles/archives of tours & destinations, open with a full-bleed hero.
-		$on = is_front_page() || is_singular( array( 'tours', 'destinations' ) );
+		$on = is_front_page() || is_singular( array( 'tours', 'destinations' ) ) || ( is_singular( 'post' ) && has_post_thumbnail( get_queried_object_id() ) );
 	}
 	if ( is_singular() && get_post_meta( get_queried_object_id(), '_beleon_header_over', true ) ) {
 		$on = true;

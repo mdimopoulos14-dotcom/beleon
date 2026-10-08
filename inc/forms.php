@@ -129,15 +129,17 @@ function beleon_render_form( $type = 'contact', $o = array() ) {
 			'tour'   => 'booking' === $type && is_singular( 'tours' ) ? get_queried_object_id() : 0,
 			'button' => 'booking' === $type ? __( 'Send booking request', 'beleon-tours' ) : __( 'Send message', 'beleon-tours' ),
 			'id'     => 'bl-form-' . $type,
+			'layout' => '',
 		)
 	);
+	$panel = 'panel' === $o['layout'] && 'booking' === $type;
 	$tour = (int) $o['tour'];
 	// phpcs:disable WordPress.Security.NonceVerification
 	$sent    = isset( $_GET['bl_sent'] ) && sanitize_key( wp_unslash( $_GET['bl_sent'] ) ) === $type;
 	$prefill = isset( $_GET['tour'] ) ? sanitize_text_field( wp_unslash( $_GET['tour'] ) ) : '';
 	// phpcs:enable
 
-	$h  = '<form class="bl-form bl-form--' . esc_attr( $type ) . '" id="' . esc_attr( $o['id'] ) . '" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" data-bl-form novalidate>';
+	$h  = '<form class="bl-form bl-form--' . esc_attr( $type ) . ( $panel ? ' bl-form--panel' : '' ) . '" id="' . esc_attr( $o['id'] ) . '" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" data-bl-form' . ( $panel ? ' data-bl-steps' : '' ) . ' novalidate>';
 	$h .= '<input type="hidden" name="action" value="beleon_form">';
 	$h .= '<input type="hidden" name="bl_type" value="' . esc_attr( $type ) . '">';
 	$h .= '<input type="hidden" name="bl_t" value="' . esc_attr( beleon_form_token( time() ) ) . '">';
@@ -147,31 +149,34 @@ function beleon_render_form( $type = 'contact', $o = array() ) {
 	}
 	$h .= '<div class="bl-form__hp" aria-hidden="true"><label>Website<input type="text" name="bl_website" tabindex="-1" autocomplete="off"></label></div>';
 
-	if ( 'booking' === $type && $tour ) {
+	if ( 'booking' === $type && $tour && ! $panel ) {
 		$h .= '<p class="bl-form__tour">' . beleon_icon( 'compass' ) . '<span><small>' . esc_html__( 'Tour', 'beleon-tours' ) . '</small>' . esc_html( get_the_title( $tour ) ) . '</span></p>';
 	}
 
-	$h .= '<div class="bl-form__grid">';
+	$h   .= $panel ? '<div class="bl-form__step" data-step="1"><div class="bl-form__grid">' : '<div class="bl-form__grid">';
+	$step = 1;
 	foreach ( beleon_form_fields( $type ) as $name => $f ) {
 		list( $label, $ftype, $required, $width ) = $f;
+		if ( $panel && 1 === $step && ! in_array( $ftype, array( 'departure', 'number' ), true ) ) {
+			// Panel layout: date and travellers first, contact details on step two.
+			$step = 2;
+			$h   .= '</div><button class="bl-btn bl-btn--solid bl-form__next" type="button" data-bl-next><span>' . esc_html__( 'Continue', 'beleon-tours' ) . '</span>' . beleon_icon( 'arrow', 'bl-btn__ico' ) . '</button></div>';
+			/* translators: %d: number of travellers */
+			$h   .= '<div class="bl-form__step" data-step="2"><button class="bl-form__back" type="button" data-bl-back>' . beleon_icon( 'arrow', 'bl-flip' ) . '<span data-bl-summary data-trav="' . esc_attr__( '%d travellers', 'beleon-tours' ) . '">' . esc_html__( 'Change date', 'beleon-tours' ) . '</span></button><div class="bl-form__grid">';
+		}
 		$id   = $o['id'] . '-' . $name;
 		$req  = $required ? ' required aria-required="true"' : '';
 		$mark = $required ? ' <span class="bl-form__req" aria-hidden="true">*</span>' : '';
-		$h   .= '<p class="bl-form__field bl-form__field--' . esc_attr( $width ) . '"><label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $mark . '</label>';
+		$h   .= '<div class="bl-form__field bl-form__field--' . esc_attr( $width ) . '"><label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $mark . '</label>';
 		if ( 'textarea' === $ftype ) {
 			$h .= '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="5" maxlength="4000"' . $req . '></textarea>';
 		} elseif ( 'departure' === $ftype ) {
-			$h .= '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"' . $req . '>';
-			$deps = $tour ? beleon_departures( $tour ) : array();
-			foreach ( $deps as $d ) {
-				$h .= '<option>' . esc_html( $d['label'] . ( $d['note'] ? ' — ' . $d['note'] : '' ) ) . '</option>';
-			}
-			$h .= '<option value="' . esc_attr__( 'Other date / private departure', 'beleon-tours' ) . '">' . esc_html__( 'Other date / private departure', 'beleon-tours' ) . '</option></select>';
+			$h .= beleon_render_departure_field( $id, $name, $tour, $req );
 		} else {
 			$attrs = '';
 			$value = '';
 			if ( 'number' === $ftype ) {
-				$attrs = ' min="1" max="60" inputmode="numeric"';
+				$attrs = ' min="1" max="60" inputmode="numeric" data-bl-stepper data-less="' . esc_attr__( 'Fewer', 'beleon-tours' ) . '" data-more="' . esc_attr__( 'More', 'beleon-tours' ) . '"';
 				$value = '2';
 			} elseif ( 'email' === $ftype ) {
 				$attrs = ' autocomplete="email"';
@@ -186,7 +191,7 @@ function beleon_render_form( $type = 'contact', $o = array() ) {
 			}
 			$h .= '<input id="' . esc_attr( $id ) . '" type="' . esc_attr( $ftype ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" maxlength="200"' . $attrs . $req . '>';
 		}
-		$h .= '</p>';
+		$h .= '</div>';
 	}
 	$h .= '</div>';
 
@@ -201,8 +206,58 @@ function beleon_render_form( $type = 'contact', $o = array() ) {
 		$h .= '<p class="bl-form__hint">' . esc_html__( 'No payment now — we reply within one working day with availability and details.', 'beleon-tours' ) . '</p>';
 	}
 	$h .= '</div>';
+	$h .= $panel ? '</div>' : '';
 	$h .= '<p class="bl-form__status" role="status" aria-live="polite"' . ( $sent ? '' : ' hidden' ) . ' data-ok="' . esc_attr( beleon_form_message( 'ok' ) ) . '">' . ( $sent ? esc_html( beleon_form_message( 'ok' ) ) : '' ) . '</p>';
 	return $h . '</form>';
+}
+
+/**
+ * Departure date field: a calendar marking the tour's departures (any other
+ * day can be requested too), with a plain select when JavaScript is off.
+ *
+ * @param string $id   Field ID.
+ * @param string $name Field name.
+ * @param int    $tour Tour ID.
+ * @param string $req  Required attributes.
+ * @return string
+ */
+function beleon_render_departure_field( $id, $name, $tour, $req ) {
+	$deps  = $tour ? beleon_departures( $tour ) : array();
+	$other = __( 'Other date / private departure', 'beleon-tours' );
+	$dated = array();
+	$texts = array();
+	$h     = '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"' . $req . '>';
+	foreach ( $deps as $d ) {
+		$label = $d['label'] . ( $d['note'] ? ' — ' . $d['note'] : '' );
+		$h    .= '<option>' . esc_html( $label ) . '</option>';
+		if ( $d['ts'] ) {
+			$dated[] = array(
+				'd' => gmdate( 'Y-m-d', $d['ts'] ),
+				'v' => $label,
+				'n' => $d['note'],
+			);
+		} else {
+			$texts[] = $label;
+		}
+	}
+	$h   .= '<option value="' . esc_attr( $other ) . '">' . esc_html( $other ) . '</option></select>';
+	$conf = array(
+		'deps'     => $dated,
+		'texts'    => $texts,
+		'locale'   => str_replace( '_', '-', determine_locale() ),
+		'start'    => (int) get_option( 'start_of_week', 1 ),
+		'labels'   => array(
+			'prev'      => __( 'Previous month', 'beleon-tours' ),
+			'next'      => __( 'Next month', 'beleon-tours' ),
+			'departure' => __( 'Scheduled departure', 'beleon-tours' ),
+			'request'   => __( 'Requested date', 'beleon-tours' ),
+			'pick'      => __( 'Pick a date on the calendar', 'beleon-tours' ),
+			'legend'    => __( 'Scheduled departure', 'beleon-tours' ),
+			'other'     => __( 'Any other day: on request', 'beleon-tours' ),
+			'dates'     => __( 'Departures', 'beleon-tours' ),
+		),
+	);
+	return $h . '<div class="bl-cal" data-bl-cal="' . esc_attr( wp_json_encode( $conf ) ) . '" hidden></div>';
 }
 
 /**

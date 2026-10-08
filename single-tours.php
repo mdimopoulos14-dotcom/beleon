@@ -80,14 +80,10 @@ while ( have_posts() ) :
 				</section>
 			<?php endif; ?>
 
-			<section id="enquire" class="bl-block bl-enquire">
-				<?php echo beleon_render_heading( array( 'eyebrow' => __( 'Reserve your place', 'beleon-tours' ), 'title' => __( 'Book this *journey*', 'beleon-tours' ), 'text' => __( 'Send us your preferred date and the number of travellers. We confirm availability and the final details personally.', 'beleon-tours' ), 'size' => 'm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-				<?php echo beleon_render_form( 'booking', array( 'tour' => $beleon_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-			</section>
 		</div>
 
 		<div class="bl-single__aside">
-			<?php echo beleon_render_booking( $beleon_id ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			<?php echo beleon_render_booking_panel( $beleon_id ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</div>
 	</div>
 

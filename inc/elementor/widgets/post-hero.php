@@ -63,6 +63,35 @@ class Post_Hero extends Widget {
 			)
 		);
 		$this->add_control(
+			'text',
+			array(
+				'label'       => __( 'Text override', 'beleon-tours' ),
+				'type'        => Controls_Manager::TEXTAREA,
+				'description' => __( 'Leave empty to use the excerpt / tagline.', 'beleon-tours' ),
+			)
+		);
+		$this->add_control(
+			'image',
+			array(
+				'label'       => __( 'Image override', 'beleon-tours' ),
+				'type'        => Controls_Manager::MEDIA,
+				'description' => __( 'Leave empty to use the featured image.', 'beleon-tours' ),
+			)
+		);
+		$this->add_control(
+			'variant',
+			array(
+				'label'   => __( 'Background', 'beleon-tours' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'image',
+				'options' => array(
+					'image'  => __( 'Image (or dark when there is none)', 'beleon-tours' ),
+					'ink'    => __( 'Dark', 'beleon-tours' ),
+					'ivory'  => __( 'Ivory', 'beleon-tours' ),
+				),
+			)
+		);
+		$this->add_control(
 			'show_excerpt',
 			array(
 				'label'        => __( 'Excerpt / tagline', 'beleon-tours' ),
@@ -140,7 +169,9 @@ class Post_Hero extends Widget {
 			$eyebrow = 'tours' === $type ? implode( ' · ', array_map( 'get_the_title', beleon_tour_destination_ids( $id ) ) ) : ( 'destinations' === $type ? beleon_text( 'region', $id ) : '' );
 		}
 		$text = '';
-		if ( 'yes' === $s['show_excerpt'] ) {
+		if ( ! empty( $s['text'] ) ) {
+			$text = $s['text'];
+		} elseif ( 'yes' === $s['show_excerpt'] ) {
 			$text = 'destinations' === $type && beleon_text( 'tagline', $id ) ? beleon_text( 'tagline', $id ) : ( has_excerpt( $id ) ? get_the_excerpt( $id ) : '' );
 		}
 		echo beleon_render_page_hero( // phpcs:ignore WordPress.Security.EscapeOutput
@@ -148,7 +179,8 @@ class Post_Hero extends Widget {
 				'title'   => $s['title'] ? $s['title'] : get_the_title( $id ),
 				'eyebrow' => $eyebrow,
 				'text'    => $text,
-				'image'   => get_post_thumbnail_id( $id ),
+				'image'   => 'image' !== ( $s['variant'] ?? 'image' ) ? 0 : ( ! empty( $s['image']['id'] ) ? (int) $s['image']['id'] : get_post_thumbnail_id( $id ) ),
+				'variant' => $s['variant'] ?? 'image',
 				'facts'   => 'yes' === $s['show_facts'] && 'tours' === $type ? beleon_render_facts( $id, array( 'style' => 'glass' ) ) : '',
 				'crumbs'  => 'yes' === $s['crumbs'],
 			)

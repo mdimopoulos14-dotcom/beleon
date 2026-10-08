@@ -27,6 +27,7 @@ $beleon_includes = array(
 	'render',
 	'tour-finder',
 	'forms',
+	'blog',
 	'compat',
 	'tour-pages',
 	'admin',

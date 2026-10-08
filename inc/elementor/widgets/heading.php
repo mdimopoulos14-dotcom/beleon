@@ -34,7 +34,7 @@ class Heading extends Widget {
 			array(
 				'label'       => __( 'Number', 'beleon-tours' ),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => '01',
+				'default'     => '',
 				'description' => __( 'Optional section number, e.g. 01.', 'beleon-tours' ),
 			)
 		);

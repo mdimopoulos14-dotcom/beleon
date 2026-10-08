@@ -608,6 +608,41 @@ function beleon_render_booking( $id, $o = array() ) {
 }
 
 /**
+ * Booking panel of the tour page sidebar: price, calendar and booking form.
+ *
+ * @param int $id Tour ID.
+ * @return string
+ */
+function beleon_render_booking_panel( $id ) {
+	$price = beleon_format_price( beleon_text( 'price', $id ) );
+	$note  = beleon_text( 'price_note', $id );
+	$phone = beleon_mod( 'beleon_phone' );
+
+	$h = '<aside class="bl-bookp" id="enquire" aria-labelledby="bl-bookp-title">';
+	$h .= '<div class="bl-bookp__head">';
+	$h .= '<p class="bl-bookp__eyebrow" id="bl-bookp-title">' . esc_html__( 'Book this journey', 'beleon-tours' ) . '</p>';
+	if ( $price ) {
+		$h .= '<p class="bl-bookp__price"><small>' . esc_html( beleon_price_label( $id ) ) . '</small>' . esc_html( $price ) . '</p>';
+		if ( $note ) {
+			$h .= '<p class="bl-bookp__note">' . esc_html( $note ) . '</p>';
+		}
+	}
+	$h .= '</div>';
+	$h .= beleon_render_form(
+		'booking',
+		array(
+			'tour'   => $id,
+			'layout' => 'panel',
+			'id'     => 'bl-form-booking',
+		)
+	);
+	if ( $phone ) {
+		$h .= '<a class="bl-book__phone" href="tel:' . esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ) . '">' . beleon_icon( 'phone' ) . '<span><small>' . esc_html__( 'Prefer to talk?', 'beleon-tours' ) . '</small>' . esc_html( $phone ) . '</span></a>';
+	}
+	return $h . '</aside>';
+}
+
+/**
  * Included / not included.
  *
  * @param int   $id Tour ID.
