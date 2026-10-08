@@ -140,5 +140,28 @@ add_action(
 		} else {
 			load_theme_textdomain( 'beleon-tours', BELEON_DIR . '/languages' );
 		}
+		beleon_refresh_type_labels();
 	}
 );
+
+/**
+ * Post type names were translated at init, before the language was known:
+ * translate the ones shown on the front end (breadcrumbs, archive titles) again.
+ */
+add_action( 'wp', 'beleon_refresh_type_labels' );
+function beleon_refresh_type_labels() {
+	$names = array(
+		'tours'        => array( __( 'Tours', 'beleon-tours' ), __( 'Tour', 'beleon-tours' ), __( 'All tours', 'beleon-tours' ) ),
+		'destinations' => array( __( 'Destinations', 'beleon-tours' ), __( 'Destination', 'beleon-tours' ), __( 'All destinations', 'beleon-tours' ) ),
+	);
+	foreach ( (array) ( $GLOBALS['beleon_registered_types'] ?? array() ) as $type ) {
+		$object = get_post_type_object( $type );
+		if ( ! $object || empty( $names[ $type ] ) ) {
+			continue;
+		}
+		list( $object->labels->name, $object->labels->singular_name, $object->labels->all_items ) = $names[ $type ];
+		$object->labels->menu_name = $object->labels->name;
+		$object->labels->archives  = $object->labels->name;
+		$object->label             = $object->labels->name;
+	}
+}

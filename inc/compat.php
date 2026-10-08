@@ -177,6 +177,26 @@ add_filter(
 );
 
 /**
+ * Yoast stores one breadcrumb title per post type archive, in the language it
+ * was first indexed in: use the post type name of the current language.
+ */
+add_filter(
+	'wpseo_breadcrumb_links',
+	function ( $links ) {
+		foreach ( $links as $i => $link ) {
+			$type = ! empty( $link['ptarchive'] ) ? $link['ptarchive'] : '';
+			if ( $type && in_array( $type, array( 'tours', 'destinations' ), true ) ) {
+				$object = get_post_type_object( $type );
+				if ( $object ) {
+					$links[ $i ]['text'] = $object->labels->name;
+				}
+			}
+		}
+		return $links;
+	}
+);
+
+/**
  * Yoast: tours and destinations get the matching schema.org page type, and
  * the tour price/dates are added to the tour's WebPage as an Offer-based TouristTrip.
  */

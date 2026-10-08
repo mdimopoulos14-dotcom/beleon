@@ -149,3 +149,27 @@ add_action(
 	},
 	1
 );
+
+/**
+ * Old beleon.gr URLs (JetEngine listing pages) lead to the new archives.
+ */
+add_action(
+	'template_redirect',
+	function () {
+		if ( ! is_404() ) {
+			return;
+		}
+		$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '', PHP_URL_PATH ), '/' );
+		$map  = apply_filters(
+			'beleon_legacy_redirects',
+			array(
+				'all-tours'        => get_post_type_archive_link( 'tours' ),
+				'all-destinations' => get_post_type_archive_link( 'destinations' ),
+			)
+		);
+		if ( ! empty( $map[ $path ] ) ) {
+			wp_safe_redirect( $map[ $path ], 301 );
+			exit;
+		}
+	}
+);

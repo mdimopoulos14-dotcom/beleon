@@ -147,6 +147,7 @@ body .elementor-button:hover{box-shadow:0 18px 34px -16px rgba(194,154,85,.9);tr
   .bl-menu .sub-menu{position:absolute;top:100%;left:-22px;min-width:240px;padding:12px;border-radius:16px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);box-shadow:var(--bl-shadow);color:var(--bl-ink);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .35s,transform .45s var(--bl-ease),visibility 0s .35s}
   .bl-menu li:hover>.sub-menu,.bl-menu li:focus-within>.sub-menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
   .bl-menu .sub-menu a{display:block;padding:10px 14px;border-radius:10px;font-size:.92rem}
+  .bl-menu .sub-menu:has(>li:nth-child(9)){display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));column-gap:4px;min-width:440px}
   .bl-menu .sub-menu a:hover{background:var(--bl-ivory);color:var(--bl-gold)}
   .bl-menu .menu-item-has-children>a{padding-right:16px}
   .bl-menu .menu-item-has-children>a::before{content:"";position:absolute;right:0;top:50%;width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:translateY(-70%) rotate(45deg);opacity:.6}
@@ -378,6 +379,11 @@ body:not(.bl-header-over) .bl-phero{padding-top:72px}
 .bl-form__hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 .bl-enquire{scroll-margin-top:calc(var(--bl-header-h) + 16px)}
 @media (max-width:640px){.bl-form__grid{grid-template-columns:1fr}}
+
+/* Yoast breadcrumbs */
+.bl-crumbs--yoast{margin:0 0 22px;font-size:.78rem;letter-spacing:.06em;color:var(--fg-muted)}
+.bl-crumbs--yoast a{text-decoration:none}
+.bl-crumbs--yoast a:hover{color:var(--bl-gold)}
 
 /* Footer banner */
 .bl-footer__banner{display:block;background:#fff;border-radius:8px;padding:4px 8px;max-width:min(420px,100%)}
