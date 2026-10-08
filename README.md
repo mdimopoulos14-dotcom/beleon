@@ -24,7 +24,7 @@ Desktop home: 99/100/100/100. Scores vary a few points between runs with server 
 
 ## Performance features
 
-- Self-hosted variable fonts (Noto Serif Display + Manrope, Greek + Latin subsets), preloaded, `font-display: swap`, metric-matched fallbacks (CLS ≈ 0).
+- Self-hosted variable fonts (Literata + Manrope, Greek + Latin subsets), preloaded, `font-display: swap`, metric-matched fallbacks (CLS ≈ 0).
 - One inline stylesheet (~12 KB gzipped), one deferred vanilla script (~6 KB). No jQuery, icon fonts or Google Fonts from the theme.
 - **Lean Elementor**: Elementor's front-end JavaScript (and jQuery) is skipped on pages that only use static widgets; any page with entrance animations, sliders, tabs, background video etc. keeps it automatically. `add_filter( 'beleon_lean_elementor', '__return_false' );` turns it off.
 - WebP sub-sizes for uploads, responsive `srcset` sizes (16:9 and 4:5), `fetchpriority="high"` on hero images, lazy loading elsewhere.

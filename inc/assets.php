@@ -24,12 +24,12 @@ function beleon_font_files() {
 		),
 		'Beleon Serif' => array(
 			'normal' => array(
-				'greek' => 'noto-serif-display-greek-wght-normal.woff2',
-				'latin' => 'noto-serif-display-latin-wght-normal.woff2',
+				'greek' => 'literata-greek-wght-normal.woff2',
+				'latin' => 'literata-latin-wght-normal.woff2',
 			),
 			'italic' => array(
-				'greek' => 'noto-serif-display-greek-wght-italic.woff2',
-				'latin' => 'noto-serif-display-latin-wght-italic.woff2',
+				'greek' => 'literata-greek-wght-italic.woff2',
+				'latin' => 'literata-latin-wght-italic.woff2',
 			),
 		),
 	);
@@ -59,7 +59,7 @@ add_action(
 			}
 		}
 		// Metric-matched fallbacks keep layout shift low while the fonts load.
-		$css .= '@font-face{font-family:"Beleon Serif Fallback";src:local("Georgia");size-adjust:104%;ascent-override:96%;descent-override:26%}';
+		$css .= '@font-face{font-family:"Beleon Serif Fallback";src:local("Georgia");size-adjust:106%;ascent-override:111%;descent-override:29%}';
 		$css .= '@font-face{font-family:"Beleon Sans Fallback";src:local("Arial");size-adjust:104%;ascent-override:102%;descent-override:29%}';
 		echo '<style id="beleon-fonts">' . $css . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput
 	},
