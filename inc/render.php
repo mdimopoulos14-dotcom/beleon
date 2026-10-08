@@ -147,12 +147,11 @@ function beleon_query_tours( $a ) {
  * @return int[]|null
  */
 function beleon_url_filter_ids() {
-	$dest  = isset( $_GET['dest'] ) ? absint( $_GET['dest'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
-	$month = isset( $_GET['month'] ) ? sanitize_text_field( wp_unslash( $_GET['month'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
-	if ( ! $dest && ! preg_match( '/^\d{4}-\d{2}$/', $month ) ) {
+	$state = beleon_finder_state();
+	if ( ! array_filter( array_diff_key( $state, array( 'sort' => 1 ) ) ) ) {
 		return null;
 	}
-	$ids = $dest ? beleon_destination_tour_ids( $dest ) : get_posts(
+	$ids = get_posts(
 		array(
 			'post_type'      => 'tours',
 			'post_status'    => 'publish',
@@ -161,19 +160,12 @@ function beleon_url_filter_ids() {
 			'no_found_rows'  => true,
 		)
 	);
-	if ( preg_match( '/^\d{4}-\d{2}$/', $month ) ) {
-		$ids = array_filter(
-			$ids,
-			function ( $id ) use ( $month ) {
-				foreach ( beleon_departures( $id ) as $d ) {
-					if ( $d['ts'] && wp_date( 'Y-m', $d['ts'] ) === $month ) {
-						return true;
-					}
-				}
-				return false;
-			}
-		);
-	}
+	$ids = array_filter(
+		$ids,
+		function ( $id ) use ( $state ) {
+			return beleon_tour_matches( $id, $state );
+		}
+	);
 	return array_values( $ids ? $ids : array( 0 ) );
 }
 
@@ -194,6 +186,7 @@ function beleon_tour_card_defaults() {
 		'price_label'  => __( 'from', 'beleon-tours' ),
 		'heading'      => 'h3',
 		'image_size'   => 'beleon-card',
+		'attrs'        => array(),
 	);
 }
 
@@ -216,7 +209,13 @@ function beleon_render_tour_card( $id, $o = array() ) {
 	$next  = beleon_next_departure( $id );
 	$dur   = beleon_text( 'duration', $id );
 
-	$h  = '<article class="bl-tcard bl-tcard--' . esc_attr( $o['style'] ) . '" style="--bl-ratio:' . esc_attr( $o['ratio'] ) . '">';
+	$attrs = '';
+	foreach ( (array) $o['attrs'] as $name => $value ) {
+		if ( null !== $value ) {
+			$attrs .= ' ' . esc_attr( $name ) . '="' . esc_attr( (string) $value ) . '"';
+		}
+	}
+	$h  = '<article class="bl-tcard bl-tcard--' . esc_attr( $o['style'] ) . '" style="--bl-ratio:' . esc_attr( $o['ratio'] ) . '"' . $attrs . '>';
 	$h .= '<a class="bl-tcard__media" href="' . esc_url( $link ) . '" tabindex="-1" aria-hidden="true">';
 	$h .= $thumb ? beleon_img( $thumb, $o['image_size'], array( 'alt' => '', 'sizes' => '(max-width: 767px) 92vw, (max-width: 1100px) 46vw, 30vw' ) ) : '<span class="bl-ph"></span>';
 	if ( $badge ) {
@@ -243,7 +242,7 @@ function beleon_render_tour_card( $id, $o = array() ) {
 	}
 	$h .= '<div class="bl-tcard__foot">';
 	if ( $price ) {
-		$h .= '<p class="bl-tcard__price"><small>' . esc_html( $o['price_label'] ) . '</small> ' . esc_html( $price ) . '</p>';
+		$h .= '<p class="bl-tcard__price"><small>' . esc_html( beleon_price_label( $id, $o['price_label'] ) ) . '</small> ' . esc_html( $price ) . '</p>';
 	}
 	/* translators: %s: tour title */
 	$h .= '<a class="bl-arrow" href="' . esc_url( $link ) . '" aria-label="' . esc_attr( sprintf( __( 'Discover %s', 'beleon-tours' ), $title ) ) . '">' . beleon_icon( 'arrow' ) . '</a>';
@@ -514,7 +513,7 @@ function beleon_render_facts( $id, $o = array() ) {
 		'departure_city' => array( 'plane', __( 'Departs from', 'beleon-tours' ), beleon_text( 'departure_city', $id ) ),
 		'next'           => array( 'calendar', __( 'Next departure', 'beleon-tours' ), $next ? $next['label'] : '' ),
 		'group_size'     => array( 'users', __( 'Group', 'beleon-tours' ), beleon_text( 'group_size', $id ) ),
-		'price'          => array( 'star', __( 'From', 'beleon-tours' ), beleon_format_price( beleon_text( 'price', $id ) ) ),
+		'price'          => array( 'star', beleon_price_label( $id, __( 'From', 'beleon-tours' ) ), beleon_format_price( beleon_text( 'price', $id ) ) ),
 	);
 	$h     = '';
 	foreach ( (array) $o['items'] as $key ) {
@@ -574,7 +573,7 @@ function beleon_render_booking( $id, $o = array() ) {
 		$o,
 		array(
 			'title'      => __( 'Departures', 'beleon-tours' ),
-			'button'     => __( 'Request availability', 'beleon-tours' ),
+			'button'     => __( 'Book now', 'beleon-tours' ),
 			'show_phone' => true,
 			'sticky'     => true,
 			'max_dates'  => 8,
@@ -587,7 +586,7 @@ function beleon_render_booking( $id, $o = array() ) {
 
 	$h = '<aside class="bl-book' . ( $o['sticky'] ? ' is-sticky' : '' ) . '" id="book">';
 	if ( $price ) {
-		$h .= '<p class="bl-book__price"><small>' . esc_html__( 'from', 'beleon-tours' ) . '</small>' . esc_html( $price ) . '</p>';
+		$h .= '<p class="bl-book__price"><small>' . esc_html( beleon_price_label( $id ) ) . '</small>' . esc_html( $price ) . '</p>';
 		if ( $note ) {
 			$h .= '<p class="bl-book__note">' . esc_html( $note ) . '</p>';
 		}
@@ -798,7 +797,7 @@ function beleon_breadcrumbs() {
 		$h   .= ( $item[1] && ! $last ) ? '<a itemprop="item" href="' . esc_url( $item[1] ) . '"><span itemprop="name">' . esc_html( $item[0] ) . '</span></a>' : '<span itemprop="name" aria-current="page">' . esc_html( $item[0] ) . '</span>';
 		$h   .= '<meta itemprop="position" content="' . ( $i + 1 ) . '"></li>';
 	}
-	return $h . '</ol></nav>';
+	return apply_filters( 'beleon_breadcrumbs_html', $h . '</ol></nav>' );
 }
 
 /**

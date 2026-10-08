@@ -75,6 +75,42 @@ add_action(
 );
 
 /**
+ * Regions for tours (Europe, Caucasus, Central Asia...), used by the tour filter.
+ * Like the post types, only registered when no plugin provides "tour_region".
+ */
+add_action(
+	'init',
+	function () {
+		if ( ! apply_filters( 'beleon_register_post_types', true ) || taxonomy_exists( 'tour_region' ) || ! post_type_exists( 'tours' ) ) {
+			return;
+		}
+		register_taxonomy(
+			'tour_region',
+			array( 'tours' ),
+			array(
+				'labels'            => array(
+					'name'          => __( 'Regions', 'beleon-tours' ),
+					'singular_name' => __( 'Region', 'beleon-tours' ),
+					'add_new_item'  => __( 'Add new region', 'beleon-tours' ),
+					'edit_item'     => __( 'Edit region', 'beleon-tours' ),
+					'all_items'     => __( 'All regions', 'beleon-tours' ),
+				),
+				'public'            => true,
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true,
+				'rewrite'           => array(
+					'slug'       => 'region',
+					'with_front' => false,
+				),
+			)
+		);
+		$GLOBALS['beleon_registered_types'][] = 'tour_region';
+	},
+	99
+);
+
+/**
  * Flush permalinks once after the theme registers the post types for the first time.
  */
 add_action(

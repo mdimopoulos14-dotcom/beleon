@@ -333,6 +333,63 @@ body:not(.bl-header-over) .bl-phero{padding-top:72px}
 .bl-chip.is-active{background:var(--fg-strong);border-color:var(--fg-strong);color:var(--bl-ivory)}
 .bl-month select{appearance:none;-webkit-appearance:none;min-height:44px;padding:.55em 2.6em .55em 1.2em;border-radius:999px;border:1px solid var(--line-strong);background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23C29A55' stroke-width='1.6'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 1.1em center;font-size:.9rem;cursor:pointer}
 
+/* Tour finder */
+.bl-finder__bar{display:grid;grid-template-columns:minmax(220px,1.7fr) repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:clamp(14px,1.6vw,20px);border:1px solid var(--line);border-radius:var(--bl-r-lg);background:var(--bl-white);box-shadow:var(--bl-shadow);margin-bottom:22px}
+.bl-finder__field{position:relative;display:flex;flex-direction:column;gap:4px;min-width:0}
+.bl-finder__field label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);padding-left:14px}
+.bl-finder__field select,.bl-finder__field input,.bl-form input:not([type=checkbox]),.bl-form select,.bl-form textarea{width:100%;min-height:48px;padding:.6em 1em;border:1px solid var(--line-strong);border-radius:14px;background:var(--bl-white);font-size:.95rem;transition:border-color .25s,box-shadow .25s}
+.bl-finder__field select,.bl-form select{appearance:none;-webkit-appearance:none;padding-right:2.6em;background:var(--bl-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23C29A55' stroke-width='1.6'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 1em center;cursor:pointer;text-overflow:ellipsis}
+.bl-finder__field select:hover,.bl-finder__field input:hover,.bl-form :is(input,select,textarea):hover{border-color:var(--fg-strong)}
+.bl-finder__field :is(select,input):focus,.bl-form :is(input,select,textarea):focus{outline:none;border-color:var(--bl-gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--bl-gold) 25%,transparent)}
+.bl-finder__field--q input{padding-left:2.7em}
+.bl-finder__field--q .bl-ico{position:absolute;left:14px;bottom:14px;width:1.1em;height:1.1em;color:var(--bl-gold-ink);pointer-events:none}
+.bl-finder__go{align-self:end;min-height:48px}
+.bl-finder__regions{margin-bottom:18px}
+.bl-finder__meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-bottom:clamp(24px,3vw,36px)}
+.bl-finder__count{margin:0;font-family:var(--bl-font-display);font-size:1.35rem;color:var(--fg-strong)}
+.bl-finder__reset{font-size:.88rem;font-weight:600;color:var(--bl-gold-ink)}
+.bl-finder__meta .bl-finder__field{margin-left:auto;flex-direction:row;align-items:center;gap:10px}
+.bl-finder__meta .bl-finder__field label{padding:0;white-space:nowrap}
+.bl-finder__meta select{min-height:42px;border-radius:999px;width:auto}
+.bl-finder__empty{display:grid;justify-items:center;gap:18px;padding:clamp(32px,5vw,64px);border:1px dashed var(--line-strong);border-radius:var(--bl-r-lg);text-align:center;color:var(--fg-muted)}
+.bl-finder__empty[hidden],.bl-tcard[hidden],.bl-finder__reset[hidden],.bl-form__status[hidden]{display:none}
+@media (max-width:640px){.bl-finder__bar{grid-template-columns:1fr 1fr}.bl-finder__field--q{grid-column:1/-1}.bl-finder__meta .bl-finder__field{margin-left:0;width:100%}.bl-finder__meta select{flex:1}}
+
+/* Forms */
+.bl-form{position:relative;padding:clamp(22px,3vw,40px);border:1px solid var(--line);border-radius:var(--bl-r-lg);background:var(--bl-white);box-shadow:var(--bl-shadow)}
+.bl-form__grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.bl-form__field{display:flex;flex-direction:column;gap:6px;margin:0}
+.bl-form__field--full{grid-column:1/-1}
+.bl-form label{font-size:.85rem;font-weight:600;color:var(--fg-strong)}
+.bl-form textarea{min-height:130px;resize:vertical;line-height:1.55}
+.bl-form__req{color:var(--bl-clay)}
+.bl-form__field.is-invalid :is(input,select,textarea){border-color:var(--bl-clay);box-shadow:0 0 0 3px color-mix(in srgb,var(--bl-clay) 18%,transparent)}
+.bl-form__tour{display:flex;align-items:center;gap:12px;margin:0 0 22px;padding:14px 18px;border-radius:14px;background:var(--bl-ivory);color:var(--fg-strong);font-weight:600}
+.bl-form__tour small{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);font-weight:700}
+.bl-form__tour .bl-ico{color:var(--bl-gold-ink)}
+.bl-form__consent{margin:20px 0 0;font-size:.86rem;color:var(--fg-muted)}
+.bl-form__consent label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:inherit;color:inherit;cursor:pointer}
+.bl-form__consent input{width:18px;height:18px;margin-top:.2em;accent-color:var(--bl-lapis);flex:none}
+.bl-form__foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:22px}
+.bl-form__hint{margin:0;font-size:.85rem;color:var(--fg-muted);max-width:36ch}
+.bl-form__status{margin:18px 0 0;padding:14px 18px;border-radius:14px;background:color-mix(in srgb,#2e7d4f 12%,#fff);color:#1d5235;font-weight:600}
+.bl-form__status.is-error{background:color-mix(in srgb,var(--bl-clay) 12%,#fff);color:#7a3420}
+.bl-form.is-sending button{opacity:.6;cursor:progress}
+.bl-form__hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.bl-enquire{scroll-margin-top:calc(var(--bl-header-h) + 16px)}
+@media (max-width:640px){.bl-form__grid{grid-template-columns:1fr}}
+
+/* Footer banner */
+.bl-footer__banner{display:block;background:#fff;border-radius:8px;padding:4px 8px;max-width:min(420px,100%)}
+.bl-footer__banner img{width:100%;height:auto}
+
+/* Language switcher */
+.bl-lang{display:flex;border-color:currentColor;gap:2px;margin:0;padding:3px;list-style:none;border:1px solid var(--line-strong);border-radius:999px;font-size:.74rem;font-weight:700;letter-spacing:.08em}
+.bl-lang a{display:block;padding:.35em .7em;border-radius:999px;text-decoration:none;opacity:.75}
+.bl-lang a:hover{opacity:1}
+.bl-lang .is-current{background:var(--bl-gold);color:var(--bl-ink);opacity:1}
+.bl-lang abbr{text-decoration:none}
+
 /* 9. Sections ------------------------------------------------------------------- */
 /* Features */
 .bl-features{display:grid;grid-template-columns:repeat(var(--bl-cols,3),minmax(0,1fr));gap:clamp(28px,4vw,56px) var(--bl-gap)}

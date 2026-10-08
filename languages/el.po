@@ -15,6 +15,17 @@ msgid_plural "%d journeys"
 msgstr[0] "%d ταξίδι"
 msgstr[1] "%d ταξίδια"
 
+msgid "%d tour"
+msgid_plural "%d tours"
+msgstr[0] "%d ταξίδι"
+msgstr[1] "%d ταξίδια"
+
+msgid "10 days or more"
+msgstr "10 ημέρες και άνω"
+
+msgid "6 to 9 days"
+msgstr "6 έως 9 ημέρες"
+
 msgid "A journey we will remember for the rest of our lives."
 msgstr "Ένα ταξίδι που θα θυμόμαστε για όλη μας τη ζωή."
 
@@ -29,6 +40,9 @@ msgstr "Προσθέστε πρώτα προορισμούς."
 
 msgid "Add new destination"
 msgstr "Νέος προορισμός"
+
+msgid "Add new region"
+msgstr "Νέα περιοχή"
 
 msgid "Add new tour"
 msgstr "Νέο ταξίδι"
@@ -54,11 +68,23 @@ msgstr "Όλοι οι προορισμοί"
 msgid "All pages"
 msgstr "Όλες οι σελίδες"
 
+msgid "All regions"
+msgstr "Όλες οι περιοχές"
+
 msgid "All tours"
 msgstr "Όλα τα ταξίδια"
 
 msgid "Alternate outlined words"
 msgstr "Εναλλάξ λέξεις με περίγραμμα"
+
+msgid "Any budget"
+msgstr "Οποιοσδήποτε προϋπολογισμός"
+
+msgid "Any city"
+msgstr "Οποιαδήποτε πόλη"
+
+msgid "Any duration"
+msgstr "Οποιαδήποτε διάρκεια"
 
 msgid "Any month"
 msgstr "Οποιονδήποτε μήνα"
@@ -77,6 +103,9 @@ msgstr "Αψίδες"
 
 msgid "Arrow hover background"
 msgstr "Φόντο βέλους (hover)"
+
+msgid "Athens"
+msgstr "Αθήνα"
 
 msgid "August"
 msgstr "Αύγουστος"
@@ -134,6 +163,9 @@ msgstr "Beleon Προορισμοί"
 
 msgid "Beleon Features"
 msgstr "Beleon Πλεονεκτήματα"
+
+msgid "Beleon Form"
+msgstr "Beleon Φόρμα"
 
 msgid "Beleon Gallery"
 msgstr "Beleon Γκαλερί"
@@ -204,6 +236,21 @@ msgstr "Καλύτερη εποχή"
 msgid "Body"
 msgstr "Κείμενο"
 
+msgid "Book"
+msgstr "Κράτηση"
+
+msgid "Book now"
+msgstr "Κάντε κράτηση"
+
+msgid "Book this *journey*"
+msgstr "Κλείστε το *ταξίδι* σας"
+
+msgid "Booking"
+msgstr "Κράτηση"
+
+msgid "Booking (on tour pages and tour templates)"
+msgstr "Κράτηση (σε σελίδες και πρότυπα ταξιδιών)"
+
 msgid "Brand & contact"
 msgstr "Brand & επικοινωνία"
 
@@ -218,6 +265,9 @@ msgstr "Διαδρομή πλοήγησης"
 
 msgid "Breadcrumbs"
 msgstr "Διαδρομή πλοήγησης"
+
+msgid "Budget"
+msgstr "Προϋπολογισμός"
 
 msgid "Button"
 msgstr "Κουμπί"
@@ -270,6 +320,12 @@ msgstr "Τερακότα"
 msgid "Clear"
 msgstr "Καθαρισμός"
 
+msgid "Clear filters"
+msgstr "Καθαρισμός φίλτρων"
+
+msgid "Co-financed by the European Union"
+msgstr "Με τη συγχρηματοδότηση της Ευρωπαϊκής Ένωσης"
+
 msgid "Color"
 msgstr "Χρώμα"
 
@@ -299,6 +355,9 @@ msgstr "Κίνηση μέτρησης"
 
 msgid "Countries"
 msgstr "Χώρες"
+
+msgid "Country, city or experience…"
+msgstr "Χώρα, πόλη ή εμπειρία…"
 
 msgid "Create in Elementor"
 msgstr "Δημιουργία στο Elementor"
@@ -366,6 +425,9 @@ msgstr "Καθυστέρηση"
 msgid "Departs from"
 msgstr "Αναχώρηση από"
 
+msgid "Departure date"
+msgstr "Ημερομηνία αναχώρησης"
+
 msgid "Departure dates"
 msgstr "Ημερομηνίες αναχώρησης"
 
@@ -426,6 +488,9 @@ msgstr "Επεξεργασία προορισμού"
 msgid "Edit fields with"
 msgstr "Επεξεργασία πεδίων με"
 
+msgid "Edit region"
+msgstr "Επεξεργασία περιοχής"
+
 msgid "Edit tour"
 msgstr "Επεξεργασία ταξιδιού"
 
@@ -440,6 +505,12 @@ msgstr "Email"
 
 msgid "Empty: destination names (tours) or region (destinations)."
 msgstr "Κενό: ονόματα προορισμών (ταξίδια) ή περιοχή (προορισμοί)."
+
+msgid "Enquiries"
+msgstr "Αιτήματα"
+
+msgid "Enquiry"
+msgstr "Αίτημα"
 
 msgid "Enquiry / booking page link (the tour name is added as ?tour=)"
 msgstr "Σελίδα αιτήματος / κράτησης (το όνομα του ταξιδιού προστίθεται ως ?tour=)"
@@ -507,11 +578,20 @@ msgstr "Βρείτε ταξίδι"
 msgid "First day"
 msgstr "Πρώτη ημέρα"
 
+msgid "First name"
+msgstr "Όνομα"
+
 msgid "Floating small image (optional)"
 msgstr "Μικρή αιωρούμενη εικόνα (προαιρετικά)"
 
 msgid "Footer"
 msgstr "Υποσέλιδο"
+
+msgid "Footer banner image (e.g. ESPA funding banner)"
+msgstr "Εικόνα banner υποσέλιδου (π.χ. banner ΕΣΠΑ)"
+
+msgid "Footer banner link"
+msgstr "Σύνδεσμος banner υποσέλιδου"
 
 msgid "Footer intro text"
 msgstr "Κείμενο υποσέλιδου"
@@ -524,6 +604,9 @@ msgstr "Μενού υποσέλιδου"
 
 msgid "For more than twenty years we have been designing journeys to places that ask for curiosity — and reward it."
 msgstr "Πάνω από είκοσι χρόνια σχεδιάζουμε ταξίδια σε τόπους που ζητούν περιέργεια — και την ανταμείβουν."
+
+msgid "Form"
+msgstr "Φόρμα"
 
 msgid "From"
 msgstr "Από"
@@ -612,6 +695,12 @@ msgstr "Χρώμα hover"
 msgid "Hover effect"
 msgstr "Εφέ hover"
 
+msgid "I agree that Beleon Tours may use my details to answer this request (%s)."
+msgstr "Συμφωνώ να χρησιμοποιήσει η Beleon Tours τα στοιχεία μου για να απαντήσει στο αίτημά μου (%s)."
+
+msgid "I agree that Beleon Tours may use my details to answer this request."
+msgstr "Συμφωνώ να χρησιμοποιήσει η Beleon Tours τα στοιχεία μου για να απαντήσει στο αίτημά μου."
+
 msgid "Icon"
 msgstr "Εικονίδιο"
 
@@ -699,6 +788,9 @@ msgstr "Ετικέτα"
 msgid "Labels"
 msgstr "Ετικέτες"
 
+msgid "Language"
+msgstr "Γλώσσα"
+
 msgid "Lapis"
 msgstr "Λάπις"
 
@@ -707,6 +799,9 @@ msgstr "Μεγάλο"
 
 msgid "Large quote slider"
 msgstr "Μεγάλο slider κριτικών"
+
+msgid "Last name"
+msgstr "Επώνυμο"
 
 msgid "Layout"
 msgstr "Διάταξη"
@@ -786,6 +881,12 @@ msgstr "Μεσαίο"
 msgid "Menu"
 msgstr "Μενού"
 
+msgid "Message"
+msgstr "Μήνυμα"
+
+msgid "Messages are saved under Beleon > Enquiries and emailed to the address in Customize > Beleon > Tours & booking."
+msgstr "Τα μηνύματα αποθηκεύονται στο Beleon > Αιτήματα και στέλνονται με email στη διεύθυνση του Customize > Beleon > Ταξίδια & κρατήσεις."
+
 msgid "Minimal with gold rules"
 msgstr "Λιτό με χρυσές γραμμές"
 
@@ -843,8 +944,14 @@ msgstr "Νύχτα"
 msgid "Night (ink gradient + glow)"
 msgstr "Νύχτα (σκούρα διαβάθμιση + λάμψη)"
 
-msgid "No departures match these filters yet. Try another month or contact us."
-msgstr "Δεν υπάρχουν ακόμη αναχωρήσεις με αυτά τα φίλτρα. Δοκιμάστε άλλο μήνα ή επικοινωνήστε μαζί μας."
+msgid "No enquiries yet."
+msgstr "Δεν υπάρχουν αιτήματα ακόμη."
+
+msgid "No payment now — we reply within one working day with availability and details."
+msgstr "Καμία πληρωμή τώρα — απαντάμε μέσα σε μία εργάσιμη με διαθεσιμότητα και λεπτομέρειες."
+
+msgid "No tours match these filters. Change a filter or contact us for a tailor-made trip."
+msgstr "Κανένα ταξίδι δεν ταιριάζει σε αυτά τα φίλτρα. Αλλάξτε κάποιο φίλτρο ή ζητήστε μας ένα ταξίδι στα μέτρα σας."
 
 msgid "None"
 msgstr "Κανένα"
@@ -915,6 +1022,9 @@ msgstr "Προαιρετικός αριθμός ενότητας, π.χ. 01."
 msgid "Orbit rings"
 msgstr "Δακτύλιοι τροχιάς"
 
+msgid "Other date / private departure"
+msgstr "Άλλη ημερομηνία / ιδιωτική αναχώρηση"
+
 msgid "Our story"
 msgstr "Η ιστορία μας"
 
@@ -939,11 +1049,17 @@ msgstr "Φωτογραφία"
 msgid "Pick an Elementor template for a region, or leave it on \"Theme design\" to use the built-in, fastest version. Elementor Pro Theme Builder templates, when present, take priority."
 msgstr "Επιλέξτε πρότυπο Elementor για κάθε περιοχή ή αφήστε «Σχεδίαση θέματος» για την ενσωματωμένη, ταχύτερη εκδοχή. Τα πρότυπα του Elementor Pro Theme Builder, αν υπάρχουν, έχουν προτεραιότητα."
 
+msgid "Plan a tailor-made trip"
+msgstr "Σχεδιάστε ταξίδι στα μέτρα σας"
+
 msgid "Plan with us"
 msgstr "Σχεδιάστε μαζί μας"
 
 msgid "Plan your trip"
 msgstr "Οργανώστε το ταξίδι σας"
+
+msgid "Please fill in the required fields correctly."
+msgstr "Συμπληρώστε σωστά τα υποχρεωτικά πεδία."
 
 msgid "Post"
 msgstr "Άρθρο"
@@ -960,14 +1076,26 @@ msgstr "Τιμή"
 msgid "Price from"
 msgstr "Τιμή από"
 
+msgid "Price label"
+msgstr "Ετικέτα τιμής"
+
 msgid "Price note"
 msgstr "Σημείωση τιμής"
 
 msgid "Price prefix"
 msgstr "Πρόθεμα τιμής"
 
+msgid "Price: high to low"
+msgstr "Τιμή: φθίνουσα"
+
+msgid "Price: low to high"
+msgstr "Τιμή: αύξουσα"
+
 msgid "Primary menu"
 msgstr "Κύριο μενού"
+
+msgid "Questions or requests (room type, single room, flights from…)"
+msgstr "Ερωτήσεις ή επιθυμίες (τύπος δωματίου, μονόκλινο, πτήση από…)"
 
 msgid "Quote"
 msgstr "Κριτική"
@@ -978,14 +1106,23 @@ msgstr "Κριτικές"
 msgid "Radius"
 msgstr "Καμπυλότητα"
 
+msgid "Recommended"
+msgstr "Προτεινόμενα"
+
 msgid "Region"
 msgstr "Περιοχή"
+
+msgid "Regions"
+msgstr "Περιοχές"
 
 msgid "Related to the current tour"
 msgstr "Σχετικά με το τρέχον ταξίδι"
 
 msgid "Request availability"
 msgstr "Ζητήστε διαθεσιμότητα"
+
+msgid "Reserve your place"
+msgstr "Εξασφαλίστε τη θέση σας"
 
 msgid "Results for “%s”"
 msgstr "Αποτελέσματα για «%s»"
@@ -1026,6 +1163,9 @@ msgstr "Διαβάθμιση άμμου"
 msgid "Scroll cue"
 msgstr "Ένδειξη κύλισης"
 
+msgid "Search"
+msgstr "Αναζήτηση"
+
 msgid "Search button"
 msgstr "Κουμπί αναζήτησης"
 
@@ -1040,6 +1180,21 @@ msgstr "Δεύτερο τηλέφωνο"
 
 msgid "See all tours"
 msgstr "Δείτε όλα τα ταξίδια"
+
+msgid "Send booking request"
+msgstr "Αποστολή αιτήματος κράτησης"
+
+msgid "Send form enquiries to (comma-separated; empty uses the email above)"
+msgstr "Αποστολή αιτημάτων φόρμας σε (χωρισμένα με κόμμα· κενό: το email παραπάνω)"
+
+msgid "Send message"
+msgstr "Αποστολή μηνύματος"
+
+msgid "Send us your preferred date and the number of travellers. We confirm availability and the final details personally."
+msgstr "Στείλτε μας την ημερομηνία που προτιμάτε και τον αριθμό ταξιδιωτών. Επιβεβαιώνουμε προσωπικά τη διαθεσιμότητα και τις τελικές λεπτομέρειες."
+
+msgid "Sent from"
+msgstr "Στάλθηκε από"
 
 msgid "Separator"
 msgstr "Διαχωριστικό"
@@ -1061,6 +1216,12 @@ msgstr "Εμφάνιση"
 
 msgid "Show tour search"
 msgstr "Εμφάνιση αναζήτησης ταξιδιών"
+
+msgid "Show tours"
+msgstr "Εμφάνιση ταξιδιών"
+
+msgid "Shown before the price instead of \"from\", e.g. \"Final price\""
+msgstr "Εμφανίζεται πριν από την τιμή αντί για «από», π.χ. «Τελική τιμή»"
 
 msgid "Shows filter chips and follows the hero search. Use on your \"All tours\" page."
 msgstr "Εμφανίζει φίλτρα και ακολουθεί την αναζήτηση του hero. Για τη σελίδα «Όλα τα ταξίδια»."
@@ -1119,6 +1280,12 @@ msgstr "Απαλό"
 msgid "Soft zoom"
 msgstr "Απαλή μεγέθυνση"
 
+msgid "Something went wrong. Please try again or call us."
+msgstr "Κάτι πήγε στραβά. Δοκιμάστε ξανά ή καλέστε μας."
+
+msgid "Sort by"
+msgstr "Ταξινόμηση"
+
 msgid "Stagger children"
 msgstr "Διαδοχική εμφάνιση"
 
@@ -1127,6 +1294,9 @@ msgstr "Σταθερό κατά την κύλιση"
 
 msgid "Style"
 msgstr "Στυλ"
+
+msgid "Subject"
+msgstr "Θέμα"
 
 msgid "Subtitle"
 msgstr "Υπότιτλος"
@@ -1161,6 +1331,9 @@ msgstr "Κείμενο όταν δεν υπάρχουν ταξίδια"
 msgid "Text width"
 msgstr "Πλάτος κειμένου"
 
+msgid "Thank you! We received your request and will contact you shortly."
+msgstr "Ευχαριστούμε! Λάβαμε το αίτημά σας και θα επικοινωνήσουμε σύντομα μαζί σας."
+
 msgid "The Silk Road was a dream for years. Beleon made it effortless and unforgettable."
 msgstr "Ο Δρόμος του Μεταξιού ήταν όνειρο χρόνων. Η Beleon τον έκανε εύκολο και αξέχαστο."
 
@@ -1175,6 +1348,9 @@ msgstr "Το θέμα διαβάζει κάθε στοιχείο ταξιδιο�
 
 msgid "Theme boxes on the edit screen"
 msgstr "Πεδία θέματος στην οθόνη επεξεργασίας"
+
+msgid "Thessaloniki"
+msgstr "Θεσσαλονίκη"
 
 msgid "This road leads *nowhere*"
 msgstr "Αυτός ο δρόμος δεν οδηγεί *πουθενά*"
@@ -1199,6 +1375,9 @@ msgstr "Πλάτος τίτλου"
 
 msgid "Titles"
 msgstr "Τίτλοι"
+
+msgid "Too many messages in a short time. Please try again later or call us."
+msgstr "Πάρα πολλά μηνύματα σε λίγο χρόνο. Δοκιμάστε αργότερα ή καλέστε μας."
 
 msgid "Tour"
 msgstr "Ταξίδι"
@@ -1227,6 +1406,12 @@ msgstr "Αρχείο ταξιδιών"
 msgid "Tours count"
 msgstr "Πλήθος ταξιδιών"
 
+msgid "Tours page intro"
+msgstr "Εισαγωγή σελίδας ταξιδιών"
+
+msgid "Tours page title"
+msgstr "Τίτλος σελίδας ταξιδιών"
+
 msgid "Transparent header over the first section"
 msgstr "Διάφανη κεφαλίδα πάνω από την πρώτη ενότητα"
 
@@ -1238,6 +1423,9 @@ msgstr "Ταξίδια με προορισμό *%s*"
 
 msgid "Traveller"
 msgstr "Ταξιδιώτης"
+
+msgid "Travellers"
+msgstr "Αριθμός ατόμων"
 
 msgid "Travellers per group, on average"
 msgstr "Ταξιδιώτες ανά ομάδα, κατά μέσο όρο"
@@ -1256,6 +1444,12 @@ msgstr "Τυπογραφία"
 
 msgid "Unknown region."
 msgstr "Άγνωστη περιοχή."
+
+msgid "Up to %s"
+msgstr "Έως %s"
+
+msgid "Up to 5 days"
+msgstr "Έως 5 ημέρες"
 
 msgid "Upcoming departures"
 msgstr "Επόμενες αναχωρήσεις"
@@ -1316,6 +1510,9 @@ msgstr "Γράψτε μας"
 
 msgid "You may also *love*"
 msgstr "Θα σας *αρέσουν* επίσης"
+
+msgid "Your message could not be sent. Please reload the page and try again."
+msgstr "Το μήνυμα δεν στάλθηκε. Ανανεώστε τη σελίδα και δοκιμάστε ξανά."
 
 msgid "Your next journey"
 msgstr "Το επόμενο ταξίδι σας"
@@ -1391,6 +1588,9 @@ msgstr "Οκτ"
 msgctxt "month"
 msgid "Sep"
 msgstr "Σεπ"
+
+msgid "privacy policy"
+msgstr "πολιτική απορρήτου"
 
 msgid "tour"
 msgstr "ταξίδι"

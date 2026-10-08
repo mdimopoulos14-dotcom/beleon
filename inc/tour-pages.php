@@ -15,12 +15,17 @@ add_action(
 		if ( is_admin() || ! $q->is_main_query() ) {
 			return;
 		}
-		if ( $q->is_post_type_archive( 'tours' ) ) {
-			$q->set( 'posts_per_page', 12 );
-			$ids = beleon_url_filter_ids();
-			if ( null !== $ids ) {
-				$q->set( 'post__in', $ids );
-			}
+		if ( $q->is_post_type_archive( 'tours' ) || $q->is_tax( 'tour_region' ) ) {
+			// The finder filters and sorts every tour on one page.
+			$q->set( 'posts_per_page', 200 );
+			$q->set( 'no_found_rows', true );
+			$q->set(
+				'orderby',
+				array(
+					'menu_order' => 'ASC',
+					'date'       => 'DESC',
+				)
+			);
 		}
 		if ( $q->is_post_type_archive( 'destinations' ) ) {
 			$q->set( 'posts_per_page', 48 );

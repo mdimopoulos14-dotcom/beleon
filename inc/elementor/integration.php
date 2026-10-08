@@ -130,6 +130,7 @@ add_action(
 			'tour-includes' => 'Tour_Includes',
 			'tour-highlights' => 'Tour_Highlights',
 			'gallery'       => 'Gallery',
+			'form'          => 'Form',
 		);
 		foreach ( $widgets as $file => $class ) {
 			require_once __DIR__ . '/widgets/' . $file . '.php';

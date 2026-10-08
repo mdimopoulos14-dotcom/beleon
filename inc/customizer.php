@@ -37,6 +37,11 @@ function beleon_mod_defaults() {
 		'beleon_booking_url'        => '/contact/',
 		'beleon_currency'           => '€',
 		'beleon_tours_archive_url'  => '',
+		'beleon_tours_title'        => __( 'Every *journey*', 'beleon-tours' ),
+		'beleon_tours_intro'        => __( 'Choose a destination or a month — every departure is designed and accompanied by our team.', 'beleon-tours' ),
+		'beleon_form_email'         => '',
+		'beleon_footer_banner'      => '',
+		'beleon_footer_banner_url'  => '',
 	);
 }
 
@@ -48,7 +53,7 @@ function beleon_mod_defaults() {
  */
 function beleon_mod( $key ) {
 	$defaults = beleon_mod_defaults();
-	return (string) get_theme_mod( $key, isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
+	return (string) apply_filters( 'beleon_mod', (string) get_theme_mod( $key, isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' ), $key );
 }
 
 add_action(
@@ -82,6 +87,8 @@ add_action(
 			array( 'beleon_address_2', 'beleon_brand', 'textarea', __( 'Second office address', 'beleon-tours' ) ),
 			array( 'beleon_license', 'beleon_brand', 'text', __( 'Licence / registry number (shown in footer)', 'beleon-tours' ) ),
 			array( 'beleon_footer_about', 'beleon_brand', 'textarea', __( 'Footer intro text', 'beleon-tours' ) ),
+			array( 'beleon_footer_banner', 'beleon_brand', 'url', __( 'Footer banner image (e.g. ESPA funding banner)', 'beleon-tours' ) ),
+			array( 'beleon_footer_banner_url', 'beleon_brand', 'text', __( 'Footer banner link', 'beleon-tours' ) ),
 			array( 'beleon_whatsapp', 'beleon_social', 'text', __( 'WhatsApp number (international, digits only)', 'beleon-tours' ) ),
 			array( 'beleon_facebook', 'beleon_social', 'url', 'Facebook URL' ),
 			array( 'beleon_instagram', 'beleon_social', 'url', 'Instagram URL' ),
@@ -103,6 +110,9 @@ add_action(
 			array( 'beleon_booking_url', 'beleon_booking', 'text', __( 'Enquiry / booking page link (the tour name is added as ?tour=)', 'beleon-tours' ) ),
 			array( 'beleon_currency', 'beleon_booking', 'text', __( 'Currency symbol', 'beleon-tours' ) ),
 			array( 'beleon_tours_archive_url', 'beleon_booking', 'text', __( '"All tours" page link (empty uses the tours archive)', 'beleon-tours' ) ),
+			array( 'beleon_tours_title', 'beleon_booking', 'text', __( 'Tours page title', 'beleon-tours' ) ),
+			array( 'beleon_tours_intro', 'beleon_booking', 'textarea', __( 'Tours page intro', 'beleon-tours' ) ),
+			array( 'beleon_form_email', 'beleon_booking', 'text', __( 'Send form enquiries to (comma-separated; empty uses the email above)', 'beleon-tours' ) ),
 		);
 
 		foreach ( $fields as $field ) {
@@ -143,6 +153,10 @@ add_action(
  * @return string
  */
 function beleon_booking_link( $post_id = 0 ) {
+	// Tours have their own booking form (#enquire) unless an Elementor template replaces the tour design.
+	if ( $post_id && 'tours' === get_post_type( $post_id ) && ! beleon_slot_template( 'single_tours' ) && apply_filters( 'beleon_tour_booking_form', true, $post_id ) ) {
+		return ( is_singular( 'tours' ) && get_queried_object_id() === (int) $post_id ? '' : get_permalink( $post_id ) ) . '#enquire';
+	}
 	$url = beleon_mod( 'beleon_booking_url' );
 	$url = $url ? $url : '/contact/';
 	if ( 0 === strpos( $url, '/' ) ) {

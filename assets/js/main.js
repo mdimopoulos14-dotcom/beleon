@@ -193,7 +193,170 @@
     });
   }
 
-  function init(scope) { fx(scope); reveal(scope); counters(scope); carousels(scope); }
+  /* Tour finder: instant filtering + sorting of the server-rendered cards, URL kept in sync. */
+  var fold = function (s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ς/g, 'σ').replace(/\s+/g, ' ').trim();
+  };
+  function finder(scope) {
+    $$('[data-bl-finder]', scope).forEach(function (f) {
+      if (f.__blf) { return; }
+      f.__blf = true;
+      var form = f.querySelector('form');
+      var grid = f.querySelector('.bl-finder__grid');
+      var cards = $$('.bl-tcard', grid);
+      var count = f.querySelector('.bl-finder__count');
+      var empty = f.querySelector('.bl-finder__empty');
+      var reset = f.querySelector('.bl-finder__reset');
+      var sort = f.querySelector('select[name="sort"]');
+      var chips = $$('[data-region]', f.querySelector('.bl-finder__regions') || f).filter(function (c) { return c.tagName === 'A'; });
+      var go = f.querySelector('.bl-finder__go');
+      var state = {};
+      var budget = function (v) { return parseInt(v, 10) || 0; };
+      if (go) { go.hidden = true; }
+      var read = function () {
+        var p = new URLSearchParams(location.search);
+        ['q', 'region', 'dest', 'month', 'days', 'from', 'price', 'sort'].forEach(function (k) { state[k] = p.get(k) || ''; });
+      };
+      var ranges = { short: [1, 5], medium: [6, 9], long: [10, 999] };
+      var match = function (c) {
+        var ds = c.dataset;
+        var has = function (list, v) { return (' ' + (list || '') + ' ').indexOf(' ' + v + ' ') > -1; };
+        if (state.region && !has(ds.region, state.region)) { return false; }
+        if (state.dest && !has(ds.dest, state.dest)) { return false; }
+        if (state.month && !has(ds.months, state.month)) { return false; }
+        if (state.from && !has(ds.from, state.from)) { return false; }
+        if (state.days && ranges[state.days]) {
+          var n = parseInt(ds.days, 10) || 0;
+          if (n < ranges[state.days][0] || n > ranges[state.days][1]) { return false; }
+        }
+        if (state.price) {
+          var pr = parseInt(ds.price, 10) || 0;
+          if (!pr || pr > budget(state.price)) { return false; }
+        }
+        if (state.q) {
+          var words = fold(state.q).split(' ');
+          for (var i = 0; i < words.length; i++) { if (words[i] && ds.search.indexOf(words[i]) === -1) { return false; } }
+        }
+        return true;
+      };
+      var key = function (c) {
+        var ds = c.dataset, big = 1e15;
+        switch (state.sort) {
+          case 'date': return parseInt(ds.next, 10) || big;
+          case 'price': return parseInt(ds.price, 10) || big;
+          case 'price-desc': return -(parseInt(ds.price, 10) || 0);
+          case 'days': return parseInt(ds.days, 10) || big;
+          default: return 0;
+        }
+      };
+      var apply = function (push) {
+        var shown = 0;
+        var ordered = cards.slice().sort(function (a, b) {
+          return (key(a) - key(b)) || ((parseInt(a.dataset.order, 10) || 0) - (parseInt(b.dataset.order, 10) || 0));
+        });
+        ordered.forEach(function (c) {
+          var ok = match(c);
+          c.hidden = !ok;
+          if (ok) { shown++; c.classList.add('is-in'); }
+          grid.appendChild(c);
+        });
+        if (count) { count.textContent = (shown === 1 ? count.dataset.one : count.dataset.many).replace('%d', shown); }
+        if (empty) { empty.hidden = shown > 0; }
+        var active = ['q', 'region', 'dest', 'month', 'days', 'from', 'price'].some(function (k) { return state[k]; });
+        if (reset) { reset.hidden = !active; }
+        chips.forEach(function (c) { c.classList.toggle('is-active', c.dataset.region === state.region); });
+        if (push !== false && window.history && history.replaceState) {
+          var p = new URLSearchParams();
+          Object.keys(state).forEach(function (k) { if (state[k]) { p.set(k, state[k]); } });
+          var qs = p.toString();
+          history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+        }
+      };
+      var fromForm = function () {
+        $$('input[name], select[name]', f).forEach(function (el) {
+          if (el.type !== 'hidden' && state.hasOwnProperty(el.name)) { state[el.name] = el.value.trim(); }
+        });
+      };
+      read();
+      var t;
+      f.addEventListener('input', function (e) {
+        if (!e.target.name) { return; }
+        fromForm();
+        clearTimeout(t);
+        t = setTimeout(apply, e.target.type === 'search' ? 160 : 0);
+      });
+      f.addEventListener('change', function () { fromForm(); apply(); });
+      if (form) { form.addEventListener('submit', function (e) { e.preventDefault(); fromForm(); apply(); }); }
+      chips.forEach(function (c) {
+        c.addEventListener('click', function (e) {
+          e.preventDefault();
+          state.region = c.dataset.region;
+          var hid = form && form.querySelector('input[name="region"]');
+          if (hid) { hid.value = state.region; }
+          apply();
+        });
+      });
+      if (reset) {
+        reset.addEventListener('click', function (e) {
+          e.preventDefault();
+          Object.keys(state).forEach(function (k) { if (k !== 'sort') { state[k] = ''; } });
+          $$('input[name], select[name]', f).forEach(function (el) { if (el.name !== 'sort' && el.type !== 'hidden') { el.value = ''; } });
+          apply();
+        });
+      }
+      if (sort) { sort.value = state.sort; }
+      apply(false);
+    });
+  }
+
+  /* Forms: send with fetch, show the result in place (normal POST without JS). */
+  function forms(scope) {
+    $$('[data-bl-form]', scope).forEach(function (form) {
+      if (form.__blform || !window.fetch || !window.FormData) { return; }
+      form.__blform = true;
+      var status = form.querySelector('.bl-form__status');
+      var btn = form.querySelector('[type="submit"]');
+      var say = function (msg, ok) {
+        status.hidden = false;
+        status.textContent = msg;
+        status.classList.toggle('is-error', !ok);
+      };
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        $$('.is-invalid', form).forEach(function (el) { el.classList.remove('is-invalid'); el.removeAttribute('aria-invalid'); });
+        if (!form.checkValidity()) {
+          var bad = $$(':invalid', form).filter(function (el) { return el.name; });
+          bad.forEach(function (el) { el.closest('p') && el.closest('p').classList.add('is-invalid'); el.setAttribute('aria-invalid', 'true'); });
+          if (bad[0]) { bad[0].focus(); }
+          return;
+        }
+        var data = new FormData(form);
+        data.append('bl_ajax', '1');
+        btn.disabled = true;
+        form.classList.add('is-sending');
+        fetch(form.action, { method: 'POST', body: data, credentials: 'same-origin' })
+          .then(function (r) { return r.json().catch(function () { return { success: false, data: {} }; }); })
+          .then(function (res) {
+            var msg = res && res.data && res.data.message;
+            if (res && res.success) {
+              form.classList.add('is-sent');
+              say(msg || status.dataset.ok, true);
+              $$('input:not([type="hidden"]):not([type="checkbox"]), textarea', form).forEach(function (el) { el.value = el.type === 'number' ? '2' : ''; });
+            } else {
+              ((res && res.data && res.data.fields) || []).forEach(function (n) {
+                var el = form.querySelector('[name="' + n + '"]');
+                if (el && el.closest('p')) { el.closest('p').classList.add('is-invalid'); el.setAttribute('aria-invalid', 'true'); }
+              });
+              say(msg || 'Error', false);
+            }
+          })
+          .catch(function () { form.submit(); })
+          .then(function () { btn.disabled = false; form.classList.remove('is-sending'); });
+      });
+    });
+  }
+
+  function init(scope) { fx(scope); reveal(scope); counters(scope); carousels(scope); finder(scope); forms(scope); }
 
   init(d);
   header();

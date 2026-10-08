@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BELEON_VERSION', '2.0.0' );
+define( 'BELEON_VERSION', '2.1.0' );
 define( 'BELEON_DIR', get_template_directory() );
 define( 'BELEON_URI', get_template_directory_uri() );
 
@@ -25,6 +25,9 @@ $beleon_includes = array(
 	'performance',
 	'templates',
 	'render',
+	'tour-finder',
+	'forms',
+	'compat',
 	'tour-pages',
 	'admin',
 	'elementor/integration',

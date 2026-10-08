@@ -45,6 +45,7 @@ $beleon_phone = beleon_mod( 'beleon_phone' );
 		</nav>
 
 		<div class="bl-header__actions">
+			<?php echo beleon_language_switcher( 'bl-header__lang' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 			<?php if ( $beleon_phone ) : ?>
 				<a class="bl-header__phone" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $beleon_phone ) ); ?>">
 					<?php echo beleon_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span><?php echo esc_html( $beleon_phone ); ?></span>

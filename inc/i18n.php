@@ -21,6 +21,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function beleon_forced_lang( $anywhere = false ) {
+	// With Polylang, theme texts follow the visitor's language (Greek file for "el", English source otherwise).
+	if ( function_exists( 'pll_current_language' ) ) {
+		if ( ! $anywhere && is_admin() && ! wp_doing_ajax() ) {
+			return '';
+		}
+		$current = (string) pll_current_language( 'slug' );
+		if ( '' === $current && function_exists( 'pll_default_language' ) ) {
+			$current = (string) pll_default_language( 'slug' );
+		}
+		return 'el' === $current && file_exists( BELEON_DIR . '/languages/el.mo' ) ? 'el' : '';
+	}
 	$lang = sanitize_key( (string) get_theme_mod( 'beleon_front_lang', 'el' ) );
 	if ( 'auto' === $lang || '' === $lang ) {
 		return '';
@@ -113,5 +124,21 @@ add_filter(
 			return $output;
 		}
 		return preg_replace( '/lang="[^"]*"/', 'lang="el"', $output );
+	}
+);
+
+/**
+ * Polylang decides the language after themes load: reload the theme texts then.
+ */
+add_action(
+	'pll_language_defined',
+	function () {
+		unload_textdomain( 'beleon-tours', true );
+		$lang = beleon_forced_lang();
+		if ( $lang ) {
+			load_textdomain( 'beleon-tours', BELEON_DIR . '/languages/' . $lang . '.mo' );
+		} else {
+			load_theme_textdomain( 'beleon-tours', BELEON_DIR . '/languages' );
+		}
 	}
 );

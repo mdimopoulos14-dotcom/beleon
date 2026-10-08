@@ -50,6 +50,7 @@ while ( have_posts() ) :
 				<?php if ( $beleon_gallery ) : ?>
 					<a href="#gallery"><?php esc_html_e( 'Gallery', 'beleon-tours' ); ?></a>
 				<?php endif; ?>
+				<a href="#enquire"><?php esc_html_e( 'Book', 'beleon-tours' ); ?></a>
 			</nav>
 
 			<section id="overview" class="bl-block">
@@ -78,6 +79,11 @@ while ( have_posts() ) :
 					<?php echo $beleon_gallery; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				</section>
 			<?php endif; ?>
+
+			<section id="enquire" class="bl-block bl-enquire">
+				<?php echo beleon_render_heading( array( 'eyebrow' => __( 'Reserve your place', 'beleon-tours' ), 'title' => __( 'Book this *journey*', 'beleon-tours' ), 'text' => __( 'Send us your preferred date and the number of travellers. We confirm availability and the final details personally.', 'beleon-tours' ), 'size' => 'm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+				<?php echo beleon_render_form( 'booking', array( 'tour' => $beleon_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			</section>
 		</div>
 
 		<div class="bl-single__aside">
@@ -104,9 +110,9 @@ while ( have_posts() ) :
 
 	<div class="bl-mbar" data-bl-mbar>
 		<?php if ( $beleon_price ) : ?>
-			<p class="bl-mbar__price"><small><?php esc_html_e( 'from', 'beleon-tours' ); ?></small><?php echo esc_html( $beleon_price ); ?></p>
+			<p class="bl-mbar__price"><small><?php echo esc_html( beleon_price_label( $beleon_id ) ); ?></small><?php echo esc_html( $beleon_price ); ?></p>
 		<?php endif; ?>
-		<a class="bl-btn bl-btn--solid bl-btn--sm" href="<?php echo esc_url( beleon_booking_link( $beleon_id ) ); ?>"><span><?php esc_html_e( 'Request availability', 'beleon-tours' ); ?></span></a>
+		<a class="bl-btn bl-btn--solid bl-btn--sm" href="<?php echo esc_url( beleon_booking_link( $beleon_id ) ); ?>"><span><?php esc_html_e( 'Book now', 'beleon-tours' ); ?></span></a>
 	</div>
 	<?php
 endwhile;

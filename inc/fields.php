@@ -26,6 +26,7 @@ function beleon_field_definitions() {
 		array(
 			'duration'       => array( __( 'Duration', 'beleon-tours' ), 'tours', 'text', __( 'e.g. "8 days / 7 nights"', 'beleon-tours' ) ),
 			'price'          => array( __( 'Price from', 'beleon-tours' ), 'tours', 'text', __( 'Number (1290) or text', 'beleon-tours' ) ),
+			'price_label'    => array( __( 'Price label', 'beleon-tours' ), 'tours', 'text', __( 'Shown before the price instead of "from", e.g. "Final price"', 'beleon-tours' ) ),
 			'price_note'     => array( __( 'Price note', 'beleon-tours' ), 'tours', 'text', __( 'e.g. "per person in a double room"', 'beleon-tours' ) ),
 			'departures'     => array( __( 'Departure dates', 'beleon-tours' ), 'tours', 'lines', __( 'One per line: 2026-05-12 or 12/05/2026, optionally "| Last seats"', 'beleon-tours' ) ),
 			'departure_city' => array( __( 'Departs from', 'beleon-tours' ), 'tours', 'text', __( 'e.g. "Athens & Thessaloniki"', 'beleon-tours' ) ),
@@ -364,7 +365,8 @@ function beleon_tour_destination_ids( $post_id = 0 ) {
  * @return int[]
  */
 function beleon_destination_tour_ids( $destination_id ) {
-	$index = wp_cache_get( 'index', 'beleon_tours' );
+	$cache_key = 'index-' . ( function_exists( 'beleon_pll_lang' ) ? beleon_pll_lang() : '' );
+	$index     = wp_cache_get( $cache_key, 'beleon_tours' );
 	if ( false === $index ) {
 		$index = array();
 		$tours = get_posts(
@@ -381,7 +383,7 @@ function beleon_destination_tour_ids( $destination_id ) {
 				$index[ $dest ][] = (int) $tour_id;
 			}
 		}
-		wp_cache_set( 'index', $index, 'beleon_tours', HOUR_IN_SECONDS );
+		wp_cache_set( $cache_key, $index, 'beleon_tours', HOUR_IN_SECONDS );
 	}
 	return isset( $index[ $destination_id ] ) ? $index[ $destination_id ] : array();
 }
@@ -389,7 +391,10 @@ function beleon_destination_tour_ids( $destination_id ) {
 add_action(
 	'save_post',
 	function () {
-		wp_cache_delete( 'index', 'beleon_tours' );
+		$langs = function_exists( 'pll_languages_list' ) ? (array) pll_languages_list() : array();
+		foreach ( array_merge( array( '' ), $langs ) as $lang ) {
+			wp_cache_delete( 'index-' . $lang, 'beleon_tours' );
+		}
 	}
 );
 
@@ -407,4 +412,37 @@ function beleon_tour_place( $post_id = 0 ) {
 		}
 	}
 	return '';
+}
+
+/**
+ * Label shown before a tour's price ("from" unless the tour sets its own).
+ *
+ * @param int    $post_id Tour ID.
+ * @param string $default Fallback label.
+ * @return string
+ */
+function beleon_price_label( $post_id = 0, $default = '' ) {
+	$label = beleon_text( 'price_label', $post_id );
+	return '' !== $label ? $label : ( '' !== $default ? $default : __( 'from', 'beleon-tours' ) );
+}
+
+/**
+ * Whole days of a tour, read from the start of its duration ("8 days / 7 nights" -> 8).
+ *
+ * @param int $post_id Tour ID.
+ * @return int
+ */
+function beleon_tour_days( $post_id = 0 ) {
+	return preg_match( '/\d+/', beleon_text( 'duration', $post_id ), $m ) ? (int) $m[0] : 0;
+}
+
+/**
+ * Price as a number for sorting and filtering (0 when unknown).
+ *
+ * @param int $post_id Tour ID.
+ * @return int
+ */
+function beleon_tour_price_value( $post_id = 0 ) {
+	$digits = preg_replace( '/[^\d]/', '', preg_replace( '/[.,]\d{1,2}$/', '', beleon_text( 'price', $post_id ) ) );
+	return '' === $digits ? 0 : (int) $digits;
 }

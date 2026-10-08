@@ -72,6 +72,11 @@ $beleon_license = beleon_mod( 'beleon_license' );
 				)
 			);
 			?>
+			<?php if ( beleon_mod( 'beleon_footer_banner' ) ) : ?>
+				<a class="bl-footer__banner" href="<?php echo esc_url( beleon_url( beleon_mod( 'beleon_footer_banner_url' ) ) ); ?>">
+					<img src="<?php echo esc_url( beleon_mod( 'beleon_footer_banner' ) ); ?>" width="512" height="61" alt="<?php esc_attr_e( 'Co-financed by the European Union', 'beleon-tours' ); ?>" loading="lazy" decoding="async">
+				</a>
+			<?php endif; ?>
 			<a class="bl-totop" href="#content" aria-label="<?php esc_attr_e( 'Back to top', 'beleon-tours' ); ?>"><?php echo beleon_icon( 'arrow-up' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 		</div>
 	</div>
